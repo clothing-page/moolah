@@ -54,6 +54,14 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             display: inline-block;
         }
+        .bio {
+            margin-top: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-align: left;
+        }
         .btn {
             background: #ff4500;
             color: white;
@@ -66,10 +74,6 @@
         .btn:hover {
             background: #e03e00;
         }
-        #checkout-btn {
-            display: none;
-            margin-top: 15px;
-        }
     </style>
 </head>
 <body>
@@ -79,20 +83,20 @@
         
         <div class="products">
             <div class="product">
-                <a href="https://example.com/tshirt"><img src="ChatGPT Image Apr 2, 2025, 10_06_56 PM.png" alt="T-Shirt"></a>
-                <h3><a href="https://example.com/tshirt">T-Shirt</a></h3>
+                <img src="ChatGPT Image Apr 2, 2025, 10_06_56 PM.png" alt="T-Shirt">
+                <h3>T-Shirt</h3>
                 <p><strong>$20</strong></p>
                 <button class="btn" onclick="addToCart('T-Shirt', 20)">Add to Cart</button>
             </div>
             <div class="product">
-                <a href="https://example.com/hoodie"><img src="ChatGPT Image Apr 2, 2025, 10_06_59 PM.png" alt="Hoodie"></a>
-                <h3><a href="https://example.com/hoodie">Hoodie</a></h3>
+                <img src="ChatGPT Image Apr 2, 2025, 10_06_59 PM.png" alt="Hoodie">
+                <h3>Hoodie</h3>
                 <p><strong>$40</strong></p>
                 <button class="btn" onclick="addToCart('Hoodie', 40)">Add to Cart</button>
             </div>
             <div class="product">
-                <a href="https://example.com/tanktop"><img src="Untitled design 4.png" alt="Tank Top"></a>
-                <h3><a href="https://example.com/tanktop">Tank Top</a></h3>
+                <img src="Untitled design 4.png" alt="Tank Top">
+                <h3>Tank Top</h3>
                 <p><strong>$35</strong></p>
                 <button class="btn" onclick="addToCart('Tank Top', 35)">Add to Cart</button>
             </div>
@@ -103,7 +107,13 @@
             <ul id="cart-items"></ul>
             <p><strong>Total: $<span id="total">0</span></strong></p>
             <div id="paypal-button-container"></div>
-            <button id="checkout-btn" class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+        
+        <div class="bio">
+            <h2>About Moolah Clothing</h2>
+            <p>Moolah Clothing is a premium streetwear brand offering stylish and high-quality apparel. Based in the UK, we aim to provide trendy and comfortable fashion for all.</p>
+            <p><strong>Business Address:</strong> 5 Rush Gardens, Nunthorpe, TS7 0GU</p>
+            <p><strong>Contact:</strong> asarekofisakyi125@gmail.com | 0755567048830</p>
         </div>
     </div>
 
@@ -126,14 +136,27 @@
                 cartList.appendChild(li);
             });
             document.getElementById("total").innerText = total;
-            
-            let checkoutBtn = document.getElementById("checkout-btn");
-            checkoutBtn.style.display = total > 0 ? "block" : "none";
-        }
 
-        function goToCheckout() {
-            window.location.href = "checkout.html";
+            if (total > 0) {
+                document.getElementById("paypal-button-container").innerHTML = "";
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: [{ amount: { value: total } }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            alert('Transaction completed by ' + details.payer.name.given_name);
+                            cart = [];
+                            total = 0;
+                            updateCart();
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
         }
     </script>
 </body>
 </html>
+
