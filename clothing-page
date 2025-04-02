@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moolah Clothing Store</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #222;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .product:hover {
+            transform: scale(1.05);
+        }
+        .product img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .cart {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: inline-block;
+        }
+        .btn {
+            background: #ff4500;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #e03e00;
+        }
+        #checkout-btn {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Moolah Clothing</h1>
+        <p>Premium streetwear for everyone. Stylish, comfortable, and affordable.</p>
+        
+        <div class="products">
+            <div class="product">
+                <a href="https://example.com/tshirt"><img src="ChatGPT Image Apr 2, 2025, 10_06_56 PM.png" alt="T-Shirt"></a>
+                <h3><a href="https://example.com/tshirt">T-Shirt</a></h3>
+                <p><strong>$20</strong></p>
+                <button class="btn" onclick="addToCart('T-Shirt', 20)">Add to Cart</button>
+            </div>
+            <div class="product">
+                <a href="https://example.com/hoodie"><img src="ChatGPT Image Apr 2, 2025, 10_06_59 PM.png" alt="Hoodie"></a>
+                <h3><a href="https://example.com/hoodie">Hoodie</a></h3>
+                <p><strong>$40</strong></p>
+                <button class="btn" onclick="addToCart('Hoodie', 40)">Add to Cart</button>
+            </div>
+            <div class="product">
+                <a href="https://example.com/tanktop"><img src="Untitled design 4.png" alt="Tank Top"></a>
+                <h3><a href="https://example.com/tanktop">Tank Top</a></h3>
+                <p><strong>$35</strong></p>
+                <button class="btn" onclick="addToCart('Tank Top', 35)">Add to Cart</button>
+            </div>
+        </div>
+        
+        <div class="cart">
+            <h2>Shopping Cart</h2>
+            <ul id="cart-items"></ul>
+            <p><strong>Total: $<span id="total">0</span></strong></p>
+            <div id="paypal-button-container"></div>
+            <button id="checkout-btn" class="btn" onclick="goToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            let cartList = document.getElementById("cart-items");
+            cartList.innerHTML = "";
+            cart.forEach(product => {
+                let li = document.createElement("li");
+                li.innerText = `${product.item} - $${product.price}`;
+                cartList.appendChild(li);
+            });
+            document.getElementById("total").innerText = total;
+            
+            let checkoutBtn = document.getElementById("checkout-btn");
+            checkoutBtn.style.display = total > 0 ? "block" : "none";
+        }
+
+        function goToCheckout() {
+            window.location.href = "checkout.html";
+        }
+    </script>
+</body>
+</html>
